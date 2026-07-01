@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Heatmap from './Heatmap';
 import Link from 'next/link';
+import { HiOutlineChevronRight } from 'react-icons/hi';
 
 export default function HabitCard({ _id, color, title, duration, onDone, logs = [] }) {
     const [isDone, setIsDone] = useState(false);
@@ -94,35 +95,105 @@ export default function HabitCard({ _id, color, title, duration, onDone, logs = 
             {/* Header */}
             <div className="flex justify-between items-center">
                 <div>
-                    <h3 className="font-semibold text-white">{title}</h3>
-                    <p className="text-sm text-slate-400">{duration}</p>
-                    <div className="text-xs text-slate-400">🔥 Current streak: {streak} days</div>
+                    <h3 className="font-semibold text-[18px] mb-1 text-white">{title}</h3>
+                    <div className="text-xs text-slate-400">🔥 streak: {streak} days</div>
                 </div>
-
                 {/* Done Button */}
-                <button
-                    onClick={handleDone}
-                    disabled={loading}
-                    style={{ '--c': color }}
-                    className={`
-                        relative overflow-hidden px-4 py-2 rounded-xl text-sm font-medium
-                        border transition-all duration-300
+
+                <div className="flex gap-2 items-center">
+                    <button
+                        onClick={handleDone}
+                        disabled={loading}
+                        style={{ '--c': color }}
+                        className={`
+                        relative overflow-hidden
+                        px-3.5 py-2
+                        rounded-[32px]
+                        border border-white/[0.08]
+                        bg-white/[0.03]
+                        backdrop-blur-[40px]
+                        backdrop-saturate-[180%]
+                        shadow-[0_10px_40px_rgba(0,0,0,0.35)]
+                        transition-all duration-300
                         active:scale-95 hover:scale-[1.04]
-
-                        ${isDone ? 'text-[var(--c)] border-[var(--c)]/30 bg-[var(--c)]/10' : 'text-slate-300 border-white/10 bg-white/5'}
-
                         ${loading ? 'opacity-60 cursor-not-allowed' : ''}
                     `}
-                >
-                    {/* Glow layer */}
-                    <span className="absolute inset-0 bg-white/5 blur-xl opacity-30" />
+                    >
+                        {/* top shine (same system as header/footer/filter) */}
+                        <div className="absolute top-0 left-3 right-3 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
-                    <span className="relative z-10">{loading ? 'Saving...' : isDone ? 'Done ✓' : 'Mark Done'}</span>
-                </button>
+                        {/* base glow */}
+                        <div className="absolute inset-0 bg-white/5 opacity-20" />
+
+                        {/* dynamic accent glow when done */}
+                        <div
+                            className={`
+                                absolute -top-6 left-1/2 h-12 w-24 -translate-x-1/2
+                                rounded-full blur-xl transition-opacity duration-300
+                                ${isDone ? 'opacity-40' : 'opacity-0'}
+                            `}
+                            style={{ backgroundColor: 'var(--c)' }}
+                        />
+
+                        {/* text */}
+                        <span
+                            className={`
+                                relative z-10 text-sm font-medium transition-colors duration-300
+                                ${isDone ? 'text-white' : 'text-slate-300'}
+                            `}
+                            style={{
+                                color: isDone ? '#ffffffbb' : undefined,
+                            }}
+                        >
+                            {loading ? 'Saving...' : isDone ? 'Done ✓' : 'Mark Done'}
+                        </span>
+
+                        {/* border accent when done */}
+                        <div
+                            className={`
+                                absolute inset-0 rounded-[32px] border transition-opacity duration-300
+                                ${isDone ? 'opacity-100' : 'opacity-0'}
+                            `}
+                            style={{
+                                borderColor: 'var(--c)',
+                                opacity: isDone ? 0.4 : 0,
+                            }}
+                        />
+                    </button>
+                    <Link
+                        href={`/${_id}`}
+                        className="
+                            relative inline-flex items-center justify-center
+
+                            h-10 w-10
+
+                            rounded-[32px]
+
+                            border border-white/[0.08]
+                            bg-white/[0.03]
+
+                            backdrop-blur-[40px]
+                            backdrop-saturate-[180%]
+
+                            shadow-[0_10px_40px_rgba(0,0,0,0.35)]
+
+                            transition-all duration-300
+
+                            hover:bg-white/[0.06]
+                            hover:scale-105
+                            hover:text-white
+                        "
+                    >
+                        {/* top shine */}
+                        <div className="absolute top-0 left-2 right-2 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+
+                        {/* icon */}
+                        <HiOutlineChevronRight className="relative z-10 h-4 w-4 text-slate-300" />
+                    </Link>
+                </div>
             </div>
 
             {/* Heatmap */}
-
             <Heatmap
                 cellCount={30}
                 cellSize={13}
@@ -133,8 +204,6 @@ export default function HabitCard({ _id, color, title, duration, onDone, logs = 
                     base: color,
                 }}
             />
-
-            <Link href={`/${_id}`}>show more info</Link>
         </div>
     );
 }

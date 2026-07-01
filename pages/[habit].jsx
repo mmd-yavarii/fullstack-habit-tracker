@@ -251,12 +251,19 @@ export default function Habit() {
             {/* LINE CHART CARD */}
             <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-xl p-4 shadow-lg h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData}>
+                    <LineChart data={chartData} style={{ pointerEvents: 'none' }}>
                         <XAxis dataKey="date" hide />
                         <YAxis hide />
-                        <Tooltip />
 
-                        <Line type="monotone" dataKey="value" stroke={data.color} strokeWidth={2.5} dot={false} />
+                        <Line
+                            type="monotone"
+                            dataKey="value"
+                            stroke={data.color}
+                            strokeWidth={2.5}
+                            dot={false}
+                            activeDot={false}
+                            isAnimationActive={false}
+                        />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
