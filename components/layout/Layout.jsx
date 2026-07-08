@@ -1,26 +1,9 @@
-'use client';
-
-import React from 'react';
-import { usePathname } from 'next/navigation';
-import Footer from './Footer';
-import Header from './Header';
-import AppBackground from '../AppBackground';
-
-export default function Layout({ children }) {
-    const pathname = usePathname();
-
-    // همه مسیرهای auth
-    const isAuthPage = pathname.startsWith('/auth');
-
+function Layout({ children }) {
     return (
-        <div className="min-h-screen">
-            <AppBackground />
-
-            <Header title="Consistency Hub" href="/" isHome />
-
-            {children}
-
-            {!isAuthPage && <Footer />}
-        </div>
+        <>
+            <main className="max-w-4xl mx-auto px-6 pt-3">{children}</main>
+        </>
     );
 }
+
+export default Layout;

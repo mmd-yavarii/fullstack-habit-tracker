@@ -1,3 +1,4 @@
+import { failureReasons } from '@/helper/helper';
 import mongoose from 'mongoose';
 
 const logSchema = new mongoose.Schema(
@@ -24,6 +25,21 @@ const logSchema = new mongoose.Schema(
             type: Number,
             default: 0,
             min: 0,
+        },
+
+        // دلیل شکست برای امار گرفتن
+        failureReason: {
+            type: String,
+            enum: failureReasons.map((item) => item.value),
+            default: 'none',
+        },
+
+        // توضیحات دلیل شکست
+        failureNote: {
+            type: String,
+            trim: true,
+            maxlength: 300,
+            default: '',
         },
     },
     {
